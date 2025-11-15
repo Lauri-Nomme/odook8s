@@ -13,9 +13,14 @@ RUN pip install --root-user-action=ignore --no-index --find-links=/wheels  -r re
 
 
 FROM python:3.13-alpine
-COPY --from=builder /install /usr
 
-#COPY stage0/fs/ /
-COPY app.py .
+ENV PYTHONPATH=/usr/local/lib/python313.zip:/usr/local/lib/python3.13:/usr/local/lib/python3.13/lib-dynload:/usr/local/lib/python3.13/site-packages:/usr/local/lib/python3/dist-packages
 
-CMD ["python", "app.py"]    
+RUN ln -s /usr/local/bin/python3 /usr/bin/python3
+RUN apk add libffi libxml2 libxslt libpq openldap
+RUN pip install setuptools
+COPY --from=builder /install /usr/local
+
+COPY stage0/fs/usr/ /usr/local/
+
+CMD ["/usr/local/bin/odoo"]
