@@ -1,0 +1,2 @@
+2025-11-15 23:40:44,067 1 ERROR odoo_s_20251115 odoo.modules.loading: Some modules are not loaded, some dependencies or manifest may be missing: ['accounting_pdf_reports', 'om_account_accountant', 'om_account_asset', 'om_account_bank_statement_import', 'om_account_budget', 'om_fiscal_year', 'om_recurring_payments'] 
+

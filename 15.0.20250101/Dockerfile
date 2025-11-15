@@ -1,4 +1,4 @@
-FROM python:3.13-alpine AS builder
+FROM python:3.12-alpine AS builder
 
 WORKDIR /
 
@@ -12,12 +12,12 @@ RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 RUN pip install --root-user-action=ignore --no-index --find-links=/wheels  -r requirements.txt --prefix=/install
 
 
-FROM python:3.13-alpine
+FROM python:3.12-alpine
 
-ENV PYTHONPATH=/usr/local/lib/python313.zip:/usr/local/lib/python3.13:/usr/local/lib/python3.13/lib-dynload:/usr/local/lib/python3.13/site-packages:/usr/local/lib/python3/dist-packages
+ENV PYTHONPATH=/usr/local/lib/python312.zip:/usr/local/lib/python3.12:/usr/local/lib/python3.12/lib-dynload:/usr/local/lib/python3.12/site-packages:/usr/local/lib/python3/dist-packages
 
 RUN ln -s /usr/local/bin/python3 /usr/bin/python3
-RUN apk add libffi libxml2 libxslt libpq openldap
+RUN apk add libffi libxml2 libxslt libpq openldap libsass
 RUN pip install setuptools
 COPY --from=builder /install /usr/local
 
