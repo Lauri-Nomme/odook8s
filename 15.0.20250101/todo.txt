@@ -1,2 +1,26 @@
+n build --progress=plain  -t test . 2>&1
+n run -it --network=host -e PGHOST=10.222.1.22 -e PGDATABASE=odoo_s_20251115 -e PGUSER=odoo -e PGPASSWORD='hunter1' test:latest
+
+
+
+----
+filestore is under
+
+in container /root/.local/share/Odoo/filestore/
+/snap/var/lib/odoo/.local/share/Odoo/filestore
+----
 2025-11-15 23:40:44,067 1 ERROR odoo_s_20251115 odoo.modules.loading: Some modules are not loaded, some dependencies or manifest may be missing: ['accounting_pdf_reports', 'om_account_accountant', 'om_account_asset', 'om_account_bank_statement_import', 'om_account_budget', 'om_fiscal_year', 'om_recurring_payments'] 
+
+addons usr/lib/python3/dist-packages/odoo/addons/
+
+accounting_pdf_reports
+dms
+mail_preview_base
+om_account_accountant
+om_account_asset
+om_account_bank_statement_import
+om_account_budget
+om_fiscal_year
+om_recurring_payments
+web_drop_target
 

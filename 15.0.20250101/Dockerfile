@@ -11,6 +11,8 @@ COPY requirements.txt .
 RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 RUN pip install --root-user-action=ignore --no-index --find-links=/wheels  -r requirements.txt --prefix=/install
 
+COPY stage0/addons.tgz .
+RUN tar xvzf addons.tgz --strip-components=1
 
 FROM python:3.12-alpine
 
@@ -22,5 +24,7 @@ RUN pip install setuptools
 COPY --from=builder /install /usr/local
 
 COPY stage0/fs/usr/ /usr/local/
+
+COPY --from=builder /usr/lib/python3/dist-packages/odoo/addons/ /usr/local/lib/python3/dist-packages/odoo/addons/
 
 CMD ["/usr/local/bin/odoo"]
