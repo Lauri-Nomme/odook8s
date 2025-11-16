@@ -1,7 +1,23 @@
 n build --progress=plain  -t test . 2>&1
 n run -it --network=host -e PGHOST=10.222.1.22 -e PGDATABASE=odoo_s_20251115 -e PGUSER=odoo -e PGPASSWORD='hunter1' test:latest
 
+----
+[pid 223803] stat("/usr/local/lib/python3/dist-packages/odoo/addons/web/static/fonts/google/Roboto/Roboto-Regular.ttf", 0x7f81ff917300) = -1 ENOENT (No such file or directory)
 
+# find . -name Roboto-Regular.ttf
+fs  ./fs/usr/lib/python3/dist-packages/odoo/addons/web/static/fonts/google/Roboto/Roboto-Regular.ttf
+
+ctr /usr/local/lib/python3/dist-packages/odoo/addons/web/static/fonts/google/Roboto/Roboto-Regular.ttf
+acc /usr/local/lib/python3/dist-packages/odoo/addons/web/static/fonts/google/Roboto/Roboto-Regular.ttf
+
+fix:
+apk add font-roboto
+
+cd /usr/local/lib/python3/dist-packages/odoo/addons/web/static/fonts/google/Roboto
+for n in *.ttf ; do echo $n ; t=$(find / -name $n ! -type l); rm -f $n ; ln -s $t $n ; done
+
+----
+2025-11-16 19:22:47,311 1 WARNING odoo_s_20251115 odoo.addons.base.models.ir_asset: IrAsset: the path "web/static/lib/underscore/underscore.js" did not resolve to anything. It may be due to security reasons.
 
 ----
 filestore is under
