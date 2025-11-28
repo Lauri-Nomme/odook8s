@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  template:
+    metadata:
+      labels:
+        app: odoo
+    spec:
+      containers:
+      - name: odoo
+        image: registry.amzk8s.io/odoo-ltf:1.0.0
+        args:
+          - --no-database-list
+          - --db-filter=^odoo_s_20251115$
+        command:
+          - /usr/local/bin/odoo
+        ports:
+        - containerPort: 8069
+        envFrom:
+        - secretRef:
+            name: odoo-db-secret
+        volumeMounts:
+        - name: filestore
+          mountPath: /root/.local/share/Odoo/filestore
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "2000m"
+          limits:
+            memory: "1Gi"
+            cpu: "2000m"
+      volumes:
+      - name: filestore
+        persistentVolumeClaim:
+          claimName: odoo-filestore-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo
+spec:
+  selector:
+    app: odoo
+  ports:
+  - port: 8069
+    targetPort: 8069
+  type: NodePort 
+
